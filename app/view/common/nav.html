@@ -1,0 +1,16 @@
+<nav>
+    <ul>
+        <li class="logo">
+            <a href="/">
+                <span>句悦词汇</span>
+            </a>
+        </li>
+        <% categories.forEach(function (category) { %>
+        <li class="item">
+            <a href="/words/<%-category.number%>.html">
+                <%-category.name%>
+            </a>
+        </li>
+        <% }) %>
+    </ul>
+</nav>

@@ -1,0 +1,20 @@
+<section class="layout-left">
+    <div class="home-topic">
+        <div class="head">
+            <span class="title">精选主题</span>
+        </div>
+        <div class="body">
+            <ul>
+                <% categories.forEach(function (item) { %>
+                <li>
+                    <a <% if (item.enName===categoryName) { %>class="active" <% } %> href="/category/<%-item.enName %>.html">
+                        <img src="<%-item.poster %>" alt="分类：<%-item.cnName %> (<%-item.enName %>)" title="<%-item.cnName %> (<%-item.enName %>)"> 
+                        <%-item.cnName %>
+                        (<%-item.enName %>)
+                    </a>
+                </li>
+                <% }) %>
+            </ul>
+        </div>
+    </div>
+</section>

@@ -1,0 +1,31 @@
+<section class="layout-right">
+    <div class="home-sidebar">
+        <div class="card-box">
+            <div class="title">微信公众号</div>
+            <div class="content">
+                <img class="wechat-qr" src="/public/images/1536469831515.jpg" alt="公众号二维码">
+            </div>
+        </div>
+        <div class="random-box">
+            <div class="title">
+                <h3>随机推荐</h3>
+            </div>
+            <div class="content">
+                <ul>
+                    <% randomQuestions.forEach(function(question, index) { %>
+                    <li>
+                        <i class="pngicon-relist-triangle"></i>
+                        <div class="link">
+                            <a href="/question/<%-question._id%>.html"><%-question.cnTitle%></a>
+                        </div>
+                        <div class="info">
+                            <span><%-question.fetchDate%></span>
+                            <span></span>
+                        </div>
+                    </li>
+                    <% }) %>
+                </ul>
+            </div>
+        </div>
+    </div>
+</section>
