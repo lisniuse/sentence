@@ -12,7 +12,6 @@ class WordsController extends Controller {
         const { ctx, service, config } = this;
 
         let data = {
-
         }
 
         await ctx.render('/pages/words', data);

@@ -7,11 +7,7 @@ class HomeController extends Controller {
         const { ctx, service, config } = this;
         const categories = await service.category.find({});
         
-        let data = {
-            site: config.Site(),
-            categories: categories
-        }
-        
+        let data = {}
         await ctx.render('/pages/index', data);
     }
 }
