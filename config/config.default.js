@@ -29,7 +29,8 @@ module.exports = appInfo => {
         client: {
             url: process.env.EGG_MONGODB_URL || 'mongodb://127.0.0.1:27017/sentence',
             options: {
-                poolSize: 20
+                poolSize: 20,
+                useNewUrlParser: true
             }
         }
     };
