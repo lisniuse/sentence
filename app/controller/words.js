@@ -11,8 +11,7 @@ class WordsController extends Controller {
     async index() {
         const { ctx, service, config } = this;
 
-        let data = {
-        }
+        let data = {}
 
         await ctx.render('/pages/words', data);
     }
