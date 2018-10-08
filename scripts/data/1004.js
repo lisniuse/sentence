@@ -83,5 +83,13 @@ module.exports = [
     'advisable',
     'advise',
     'advocate',
-    'affair'
+    'affair',
+    'affect',
+    'affection',
+    'afford',
+    'afraid',
+    'Africa',
+    'African',
+    'after',
+    ''
 ]
