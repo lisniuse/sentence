@@ -33,7 +33,7 @@ class WordService extends Service {
      */
     async find(query) {
         return this.ctx.model.Word.find(query)
-        .populate('questionId')
+        .populate('sentenceId')
         .exec();
     }
 
@@ -42,7 +42,7 @@ class WordService extends Service {
      */
     async search(query, pageNum = 0, pageSize = 10) {
         return this.ctx.model.Word.find(query)
-        .populate('questionId')
+        .populate('sentenceId')
         .populate('categoryId')
         .sort({'createTime':-1})
         .skip(pageNum * pageSize)
@@ -56,7 +56,7 @@ class WordService extends Service {
     async findByNum(pageSize) {
         let pageNum = 0;
         return this.ctx.model.Word.find({})
-        .populate('questionId')
+        .populate('sentenceId')
         .sort({'createTime':-1})
         .skip(pageNum * pageSize)
         .limit(pageSize)
@@ -68,7 +68,7 @@ class WordService extends Service {
      */
     async findOne(query) {
         return this.ctx.model.Word.findOne(query)
-        .populate('questionId')
+        .populate('sentenceId')
         exec();
     }
 
@@ -78,7 +78,7 @@ class WordService extends Service {
      */
     async getWordById(answerId) {
         return this.ctx.model.Word.findById(answerId)
-        .populate('questionId')
+        .populate('sentenceId')
         .exec();
     }
 

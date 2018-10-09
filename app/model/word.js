@@ -10,7 +10,7 @@ module.exports = app => {
     const WordSchema = new Schema({
         categoryIds: { type: Array }, //所属种类ID
 
-        english: { type: String }, //英文词义
+        english: { type: String }, //英文词
         chinese: { type: String }, //中文词义
         pos: { type: String }, //词性
         phoneticSymbol: { type: String }, //音标 

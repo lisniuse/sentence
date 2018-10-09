@@ -2,7 +2,7 @@ module.exports = [
     'a',
     'an',
     'abandon',
-    'ablility',
+    'ability',
     'able',
     'abnormal',
     'aboard',

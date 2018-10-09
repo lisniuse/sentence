@@ -36,7 +36,7 @@ class CategoryController extends Controller {
         }
 
         //创建分类
-        categoryRes = await ctx.service.category.create(category);
+        categoryRes = await service.category.create(category);
 
         //如果问题添加成功
         if ( categoryRes._id ) {
