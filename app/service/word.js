@@ -86,11 +86,11 @@ class WordService extends Service {
     /**
      * 更新单词信息
      */
-    async update(answerId, updateInfo) {
-        if (!answerId) {
+    async update(wordId, updateInfo) {
+        if (!wordId) {
             return;
         }
-        const query = { _id: answerId };
+        const query = { _id: wordId };
         const update = updateInfo;
         return this.ctx.model.Word.update(query, update).exec();
     }

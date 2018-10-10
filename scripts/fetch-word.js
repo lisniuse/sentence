@@ -1,7 +1,10 @@
 const fly = require('flyio');
 const w1004 = require('./data/1004');
 const cheerio = require('cheerio');
-
+const words = [{
+    number: "1004",
+    w: w1004
+}];
 const headers = {
     'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8',
     'Accept-Encoding': 'gzip, deflate',
@@ -31,16 +34,41 @@ const getChinese = async function(english) {
     return chinese;
 }
 
+const getSentences = async function(english) {
+    let res = await fly.get("http://www.youdao.com/example/blng/eng/" + english).catch(()=>{});
+    let $ = cheerio.load(res.data, { decodeEntities: false });
+    let sentenceEles = $("#bilingual ul li");
+    let sentences = [];
+    sentenceEles.each((i, elem) => {
+        let english = $(elem).find("p").eq(0).text();
+        let chinese = $(elem).find("p").eq(1).text();
+        english = english.split("\n")[0];
+        chinese = chinese.split("\n")[0];
+        sentences.push({
+            english: english,
+            chinese: chinese,
+            from: $(elem).find("p").eq(2).text()
+        });
+    });
+    return sentences;
+}
+
 const main = async function () {
-    for (let index = 0; index < w1004.length; index++) {
-        const english = w1004[index];
-        const word = {
-            english: english
-        }
-        //let res = await fly.post("http://127.0.0.1:7004/api/v1/word", word).catch(()=>{});
-        //console.log(res.data);
+    for (let index = 0; index < words[0].w.length; index++) {
+        const english = words[0].w[index];
+        const categoryNumber = words[0].number;
         let chinese = await getChinese(english);
-        console.log(english, chinese);
+        const word = {
+            categoryNumber: categoryNumber,
+            english: english,
+            chinese: chinese,
+            sentenceId: "1",
+            sentenceIds: ["1","2"]
+        }
+        let res = await fly.post("http://127.0.0.1:7004/api/v1/word", word).catch(()=>{});
+        let sen = await getSentences(english);
+        console.log(sen);
+        //console.log(res.data);
     }
 }
 main();
