@@ -1,9 +1,9 @@
 const fly = require('flyio');
-const w1004 = require('./data/1004');
+const w1005 = require('./data/1005');
 const cheerio = require('cheerio');
 const words = [{
-    number: "1004",
-    w: w1004
+    number: "1005",
+    w: w1005
 }];
 const headers = {
     'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8',
@@ -27,6 +27,14 @@ fly.interceptors.request.use((request)=>{
     return request;
 });
 
+const sleep = async function (second) {
+    return new Promise(function (reslove, reject) {
+        setTimeout(function() {
+            reslove(true);
+        }, second * 1000);
+    });
+}
+
 const getChinese = async function(english) {
     let res = await fly.get("http://www.youdao.com/w/eng/" + english).catch(()=>{});
     let $ = cheerio.load(res.data, { decodeEntities: false });
@@ -35,21 +43,43 @@ const getChinese = async function(english) {
 }
 
 const getSentences = async function(english) {
-    let res = await fly.get("http://www.youdao.com/example/blng/eng/" + english).catch(()=>{});
-    let $ = cheerio.load(res.data, { decodeEntities: false });
+    let res = "";
+    let $ = "";
+    let count = 0;
+    do {
+        count++;
+        res = await fly.get("http://www.youdao.com/example/blng/eng/" + english + "/#keyfrom=dict.main.moreblng").catch(()=>{});
+        $ = cheerio.load(res.data, { decodeEntities: false });
+        if ( $("#bilingual .remind p").text().indexOf("当前分类下找不到") !== -1 ) {
+            console.log("第"+count+"次");
+            await sleep(2);
+        }
+    } while ( $("#bilingual .remind p").text().indexOf("当前分类下找不到") !== -1 )
     let sentenceEles = $("#bilingual ul li");
     let sentences = [];
     sentenceEles.each((i, elem) => {
-        let english = $(elem).find("p").eq(0).text();
-        let chinese = $(elem).find("p").eq(1).text();
-        english = english.split("\n")[0];
-        chinese = chinese.split("\n")[0];
-        sentences.push({
-            english: english,
-            chinese: chinese,
-            from: $(elem).find("p").eq(2).text()
-        });
+        if ( i < 4 ) {
+            let english = $(elem).find("p").eq(0).text();
+            let chinese = $(elem).find("p").eq(1).text();
+            english = english.split("\n")[0];
+            chinese = chinese.split("\n")[0];
+            sentences.push({
+                english: english,
+                chinese: chinese,
+                from: $(elem).find("p").eq(2).text()
+            });
+        } else {
+            return 
+        }
     });
+    sentences.sort(function(obj1, obj2) {
+        return obj1.english.length - obj2.english.length;
+    });
+    for (let i = 0; i < sentences.length; i++) {
+        const sentence = sentences[i];
+        let res = await fly.post("http://127.0.0.1:7004/api/v1/sentence", sentence).catch(()=>{});
+        sentences[i].id = res.data.data._id;
+    }
     return sentences;
 }
 
@@ -58,17 +88,20 @@ const main = async function () {
         const english = words[0].w[index];
         const categoryNumber = words[0].number;
         let chinese = await getChinese(english);
+        let sen = await getSentences(english);
+        let senIds = [];
+        sen.forEach(function(obj) {
+            senIds.push(obj.id);
+        });
         const word = {
             categoryNumber: categoryNumber,
             english: english,
             chinese: chinese,
-            sentenceId: "1",
-            sentenceIds: ["1","2"]
+            sentenceId: sen[0].id,
+            sentenceIds: senIds
         }
         let res = await fly.post("http://127.0.0.1:7004/api/v1/word", word).catch(()=>{});
-        let sen = await getSentences(english);
-        console.log(sen);
-        //console.log(res.data);
+        console.log(res.data);
     }
 }
 main();

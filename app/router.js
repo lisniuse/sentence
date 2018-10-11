@@ -29,8 +29,8 @@ module.exports = app => {
     //api
     router.post('/api/v1/category', controller.category.create); //创建分类，内部接口
     router.post('/api/v1/word', controller.word.create); //创建一个单词
+    router.post('/api/v1/sentence', controller.sentence.create); //创建一个句子
     
-    // router.post('/api/v1/question', controller.question.create); //添加一个问题
     // router.post('/api/v1/category', controller.category.create); //添加一个分类
     // router.post('/api/v1/answer', controller.answer.create); //添加一个回答
     // router.post('/api/v1/link', controller.link.create); //添加一个回答

@@ -68,7 +68,6 @@ class SentenceService extends Service {
      */
     async findOne(query) {
         return this.ctx.model.Sentence.findOne(query)
-        .populate('questionId')
         exec();
     }
 
