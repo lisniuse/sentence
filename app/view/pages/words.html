@@ -5,7 +5,13 @@
     <div>
         <% include ../common/nav.html %>
         <main class="clearfix">
-
+            <ul>
+                <% words.forEach(function (word) { %>
+                <li>
+                    <%-word.english%>
+                </li>
+                <% }) %>
+            </ul>
         </main>
         <% include ../common/footer.html %>
     </div>
