@@ -1,4 +1,57 @@
 main {
-    width: 980px;
-    margin: 0px auto;
+    width: calc(100% - 240px);
+    margin-left: 240px;
+    padding: 20px;
+    box-sizing: border-box;
+
+    .english {
+        font-size: 15px;
+        font-weight: bold;
+    }
+    
+    .chinese {
+        font-size: 12px;
+        margin-left: 8px;
+        color: gray;
+    }
+
+    .sentence {
+        font-size: 12px;
+        margin-left: 8px;
+        color: gray;
+    }
+}
+
+.tools-bar {
+    position: fixed;
+    padding: 10px;
+    box-sizing: border-box;
+    right: 20px;
+    top: 20px;
+    width: 150px;
+    border-radius: 5px;
+    background-color: #fff;
+    box-shadow: 0px 0px 10px #eeeeee;
+    color: #333;
+
+    ul {
+        li {
+            cursor: pointer;
+            position: relative;
+            padding: 5px;
+
+            i.fa {
+                position: absolute;
+                top: calc(50% - 6.5px);
+            }
+            
+            .item-name {
+                padding-left: 20px;
+            }
+
+            &:hover {
+                background-color: #eeeeee;
+            }
+        }
+    }
 }

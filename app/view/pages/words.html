@@ -2,17 +2,27 @@
 <html lang="en">
 <% include ../common/head.html %>
 <body>
-    <div>
+    <div class="container">
         <% include ../common/nav.html %>
         <main class="clearfix">
             <ul>
                 <% words.forEach(function (word) { %>
                 <li>
-                    <%-word.english%>
+                    <span class="english" v-show="isShowWord"><%-word.english%></span>
+                    <span class="chinese" v-show="isShowWordMeaning"><%-word.chinese%></span>
+                    <span class="sentence" v-show="isShowSentence"><%-word.sentenceId.english%> <%-word.sentenceId.chinese%></span>
                 </li>
                 <% }) %>
             </ul>
         </main>
+        <div class="tools-bar">
+            <ul>
+                    <li @click="seleteItem('isShowWord')"><i class="fa fa-check" v-show="isShowWord"></i><span class="item-name">显示英文单词</span></li>
+                <li @click="seleteItem('isShowWordMeaning')"><i class="fa fa-check" v-show="isShowWordMeaning"></i><span class="item-name">显示单词词义</span></li>
+                <li @click="seleteItem('isShowSentence')"><i class="fa fa-check" v-show="isShowSentence"></i><span class="item-name">显示单词例句</span></li>
+                <li @click="seleteItem('isShowAllSentence')"><i class="fa fa-check" v-show="isShowAllSentence"></i><span class="item-name">显示所有例句</span></li>
+            </ul>
+        </div>
         <% include ../common/footer.html %>
     </div>
 </body>

@@ -36,7 +36,13 @@ const sleep = async function (second) {
 }
 
 const getChinese = async function(english) {
-    let res = await fly.get("http://www.youdao.com/w/eng/" + english).catch(()=>{});
+    let res = {};
+    do {
+        res = await fly.get("http://www.youdao.com/w/eng/" + english).catch(()=>{});
+        if ( !res.data ) {
+            await sleep(2);
+        }
+    } while ( !res.data )
     let $ = cheerio.load(res.data, { decodeEntities: false });
     let chinese = $(".trans-container ul li").eq(0).text();
     return chinese;
