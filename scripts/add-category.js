@@ -19,6 +19,10 @@ const categories = [{
     alias: "cet6", //英文别名
     number: "1003", //编号
 }, {
+    name: "考研英语词汇表", //名称
+    alias: "ge", //英文别名
+    number: "1006", //编号
+}, {
     name: "成人学位英语词汇表", //名称
     alias: "adult-higher-education-bachelors-degree-in-English-test", //英文别名
     number: "1004", //编号

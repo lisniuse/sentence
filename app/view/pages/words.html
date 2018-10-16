@@ -5,22 +5,40 @@
     <div class="container">
         <% include ../common/nav.html %>
         <main class="clearfix">
-            <ul>
-                <% words.forEach(function (word) { %>
-                <li>
-                    <span class="english" v-show="isShowWord"><%-word.english%></span>
-                    <span class="chinese" v-show="isShowWordMeaning"><%-word.chinese%></span>
-                    <span class="sentence" v-show="isShowSentence"><%-word.sentenceId.english%> <%-word.sentenceId.chinese%></span>
+            <ul id="allWords" v-show="keyword.length === 0">
+                <% words.forEach(function (word, index) { %>
+                <li class="word-item">
+                    <div class="one-word">
+                        <span class="serial-number" v-show="isShowSerialNumber"><%-index+1%></span>
+                        <span class="english" v-show="isShowWord"><%-word.english%></span>
+                        <span class="chinese" v-show="isShowWordMeaning"><%-word.chinese%></span>
+                        <span class="sentence" v-show="isShowSentence">
+                            <span class="sentence-english"><%-word.sentence.english%></span>
+                            <span class="sentence-chinese"><%-word.sentence.chinese%></span>
+                        </span>
+                    </div>
+                    <div class="example-sentence" v-show="isShowAllSentence">
+                        <ol>
+                            <% word.sentences.forEach(function (sentence) { %>
+                            <li class="sentence-item">
+                                <span class="sentence-english"><%-sentence.english%></span>
+                                <span class="sentence-chinese"><%-sentence.chinese%></span>
+                            </li>
+                            <% }) %>
+                        </ol>
+                    </div>
                 </li>
                 <% }) %>
             </ul>
         </main>
         <div class="tools-bar">
             <ul>
-                    <li @click="seleteItem('isShowWord')"><i class="fa fa-check" v-show="isShowWord"></i><span class="item-name">显示英文单词</span></li>
-                <li @click="seleteItem('isShowWordMeaning')"><i class="fa fa-check" v-show="isShowWordMeaning"></i><span class="item-name">显示单词词义</span></li>
-                <li @click="seleteItem('isShowSentence')"><i class="fa fa-check" v-show="isShowSentence"></i><span class="item-name">显示单词例句</span></li>
-                <li @click="seleteItem('isShowAllSentence')"><i class="fa fa-check" v-show="isShowAllSentence"></i><span class="item-name">显示所有例句</span></li>
+                <li class="input"><input type="text" placeholder="筛选关键字如:book" v-model="keyword"></li>
+                <li class="item" @click="seleteItem('isShowWord')"><i class="fa fa-check" v-show="isShowWord"></i><span class="item-name">显示英文单词</span></li>
+                <li class="item" @click="seleteItem('isShowWordMeaning')"><i class="fa fa-check" v-show="isShowWordMeaning"></i><span class="item-name">显示单词词义</span></li>
+                <li class="item" @click="seleteItem('isShowSentence')"><i class="fa fa-check" v-show="isShowSentence"></i><span class="item-name">显示单词例句</span></li>
+                <li class="item" @click="seleteItem('isShowAllSentence')"><i class="fa fa-check" v-show="isShowAllSentence"></i><span class="item-name">显示所有例句</span></li>
+                <li class="item" @click="seleteItem('isShowSerialNumber')"><i class="fa fa-check" v-show="isShowSerialNumber"></i><span class="item-name">显示单词编号</span></li>
             </ul>
         </div>
         <% include ../common/footer.html %>
