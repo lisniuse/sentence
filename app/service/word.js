@@ -29,6 +29,17 @@ class WordService extends Service {
     }
 
     /**
+     * 只查询100个单词
+     */
+    async find100(query) {
+        return this.ctx.model.Word.find(query)
+        .populate('sentenceId')
+        .skip(0)
+        .limit(100)
+        .exec();
+    }
+
+    /**
      * 查询单词
      */
     async find(query) {

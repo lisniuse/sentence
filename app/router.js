@@ -31,6 +31,8 @@ module.exports = app => {
     router.post('/api/v1/word', controller.word.create); //创建一个单词
     router.post('/api/v1/sentence', controller.sentence.create); //创建一个句子
     
+    router.get('/api/v1/words/:number', controller.words.apiWordsList); //获取单词列表
+
     // router.post('/api/v1/category', controller.category.create); //添加一个分类
     // router.post('/api/v1/answer', controller.answer.create); //添加一个回答
     // router.post('/api/v1/link', controller.link.create); //添加一个回答

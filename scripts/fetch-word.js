@@ -1,6 +1,7 @@
 const fly = require('flyio');
 const w1005 = require('./data/1005');
 const cheerio = require('cheerio');
+let debugWord = "attentively";
 const words = [{
     number: "1005",
     w: w1005
@@ -39,11 +40,16 @@ const getChinese = async function(english) {
     let res = {};
     do {
         res = await fly.get("http://www.youdao.com/w/eng/" + english).catch(()=>{});
-        if ( !res.data ) {
+        if ( res ) {
+            if ( !res.data ) {
+                console.log("重新尝试获取", english, "的中文");
+                await sleep(2);
+            }
+        } else if ( !res ) {
             console.log("重新尝试获取", english, "的中文");
             await sleep(2);
         }
-    } while ( !res.data )
+    } while ( !res || !res.data )
     let $ = cheerio.load(res.data, { decodeEntities: false });
     let chinese = $(".trans-container ul li").eq(0).text();
     return chinese;
@@ -56,12 +62,22 @@ const getSentences = async function(english) {
     do {
         count++;
         res = await fly.get("http://www.youdao.com/example/blng/eng/" + english + "/#keyfrom=dict.main.moreblng").catch(()=>{});
-        $ = cheerio.load(res.data, { decodeEntities: false });
-        if ( $("#bilingual .remind p").text().indexOf("当前分类下找不到") !== -1 ) {
-            console.log("第"+count+"次");
+        if ( res ) {
+            if ( res.data ) {
+                $ = cheerio.load(res.data, { decodeEntities: false });
+                if ( $("#bilingual .remind p").text().indexOf("当前分类下找不到") !== -1 ) {
+                    console.log("第"+count+"次尝试获取句子，没有找到分类");
+                    await sleep(2);
+                }
+            } else if ( !res.data ) {
+                console.log("第"+count+"次尝试获取句子，没有找到res.data");
+                await sleep(2);
+            }
+        } else {
+            console.log("第"+count+"次尝试获取句子，没有找到res");
             await sleep(2);
         }
-    } while ( $("#bilingual .remind p").text().indexOf("当前分类下找不到") !== -1 )
+    } while ( !res || !res.data || $("#bilingual .remind p").text().indexOf("当前分类下找不到") !== -1 )
     let sentenceEles = $("#bilingual ul li");
     let sentences = [];
     sentenceEles.each((i, elem) => {
@@ -93,6 +109,8 @@ const getSentences = async function(english) {
 const main = async function () {
     for (let index = 0; index < words[0].w.length; index++) {
         const english = words[0].w[index];
+        if ( debugWord === english ) debugWord = "";
+        if ( debugWord ) continue;
         const categoryNumber = words[0].number;
         let chinese = await getChinese(english);
         let sen = await getSentences(english);
@@ -108,7 +126,7 @@ const main = async function () {
             sentenceIds: senIds
         }
         let res = await fly.post("http://127.0.0.1:7004/api/v1/word", word).catch(()=>{});
-        console.log(res.data);
+        console.log(english, res.data);
     }
 }
 main();
