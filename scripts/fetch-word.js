@@ -40,6 +40,7 @@ const getChinese = async function(english) {
     do {
         res = await fly.get("http://www.youdao.com/w/eng/" + english).catch(()=>{});
         if ( !res.data ) {
+            console.log("重新尝试获取", english, "的中文");
             await sleep(2);
         }
     } while ( !res.data )
