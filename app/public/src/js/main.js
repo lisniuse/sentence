@@ -1,6 +1,6 @@
 $(function () {
     var CONST = {
-        apiBase: 'http://127.0.0.1:7004/api/v1/'
+        apiBase: '/api/v1/'
     };
     var utils = {};
     var vueApp = {};
