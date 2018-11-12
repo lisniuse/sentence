@@ -10,7 +10,7 @@ class WordsController extends Controller {
 
     async index() {
         const { ctx, service, config } = this;
-        const number = String(ctx.params.number).replace(".html", "");
+        const number = 1005;//String(ctx.params.number).replace(".html", "");
 
         let categoryRes = await service.category.findOne({
             number: number
